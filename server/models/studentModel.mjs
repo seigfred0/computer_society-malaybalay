@@ -8,7 +8,7 @@ const addStudent = async (newStudent) => {
             { type: "attendance"}, 
             { $push: { students: newStudent } }
         )
-        console.log(result);
+        await disconnect();
         
     } catch (error) {
         console.log('model error',error)
@@ -16,7 +16,21 @@ const addStudent = async (newStudent) => {
 }
 
 
+const getStudents = async () => {
+    try {
+        const { collection } = await connect();
+        const result = await collection.findOne({ type: "attendance" })
+        console.log(result.students)
+    } catch (error) {
+        console.log('model error',error)
+    }
+}
+
+
+
+
 
 export default {
-    addStudent
+    addStudent,
+    getStudents
 }
