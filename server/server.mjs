@@ -1,18 +1,21 @@
 import express from 'express';
+import attendanceRoute from './routes/attendanceRoutes.mjs';
+
 
 // for testing area
 
-import { addStudent } from './models/studentModel.mjs';
+
 
 
 // end of testing area
 
+
 const app = express();
 
+app.use('/attendance', attendanceRoute)
 
 
 app.get('/', (req, res) => {
-    addStudent();
     res.send('Hello World!')
 })
 

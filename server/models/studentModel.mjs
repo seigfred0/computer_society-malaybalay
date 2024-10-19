@@ -1,15 +1,7 @@
 import { connect, disconnect } from "../utils/dbUtils.mjs";
 
 
-const newStudent = {
-    id: '111',
-    name: 'seigfreda',
-    year: '1st year',
-    paid: false,
-    qr_code: '120sdfjslddjl390'
-}
-
-const addStudent = async () => {
+const addStudent = async (newStudent) => {
     try {
         const { collection } = await connect();
         const result = await collection.updateOne(
@@ -25,6 +17,6 @@ const addStudent = async () => {
 
 
 
-export {
+export default {
     addStudent
 }
