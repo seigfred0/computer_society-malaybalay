@@ -4,7 +4,7 @@
 ### October 20, 2024 (seig)
 
 - Yee, here's the mongodb data format
-- `attendanceRoutes.mjs` = I commented the routes not yet done. Kindly make progress of the following especially the createStudent.
+- `attendanceRoutes.mjs` = I commented the code 'not yet done'. Kindly make progress of the following especially the createStudent.
     - generate student qr code inside the function and save it to the database with their name and year
     - send the qr code to the client 
 
@@ -37,3 +37,4 @@
   "uid": "attendance"
 }
 ```
+
