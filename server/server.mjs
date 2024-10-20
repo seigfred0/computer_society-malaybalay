@@ -5,8 +5,6 @@ import attendanceRoute from './routes/attendanceRoutes.mjs';
 // for testing area
 
 
-import userModel from './models/studentModel.mjs'
-
 // end of testing area
 
 
@@ -20,8 +18,9 @@ app.use('/attendance', attendanceRoute)
 
 
 app.get('/', async (req, res) => {
-    const result = await userModel.deleteStudent('111')
-    res.send(result)
+    // const result = await userModel.deleteStudent('111')
+    // console.log(userModel.createStudent())
+    res.send('working')
 })
 
 app.listen(5000, () => {

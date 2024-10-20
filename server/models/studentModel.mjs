@@ -1,91 +1,79 @@
 import { connect, disconnect } from "../utils/dbUtils.mjs";
 
-
-const addStudent = async (newStudent) => {
+const fetchStudent = async (studentId) => {
     try {
-        const { collection } = await connect();
-        const result = await collection.updateOne(
-            { type: "attendance"}, 
-            { $push: { students: newStudent } }
-        )
-        await disconnect();
+        const collection = await connect('attendance');
+        const result = await collection.findOne(
+            { uid: "attendance"},
+            { projection: {
+                students: 1,
+                _id: 0
+            }}
+        );
+
+        if (result && result.students) {
+            const foundStudent = result.students.find(student => student.uid === studentId)
+            return foundStudent
+        }
+        return null;
+    } catch (error) {
+        console.log(error)
+        throw error
+    } 
+}
+
+const getAllStudents = async () => {
+    try {
+        const collection = await connect('attendance');
+        const result = await collection.findOne(
+            { uid: "attendance"},
+            {
+                projection: {
+                    students: 1,
+                    _id: 0
+                }
+            }
+        );
+        return result.students ? result.students : null;
+    } catch (error) {
+        console.log('Error getting all students:', error);
+        throw new Error('Failed to fetch students');
+    }
+}
+
+
+const updateStudent = async () => {
+    try {
         
     } catch (error) {
-        console.log('model error',error)
-    }
-}
-
-const getStudents = async () => {
-    try {
-        const { collection } = await connect();
-        const result = await collection.findOne({ type: "attendance" })
-        return result
-    } catch (error) {
-        console.log('model error',error)
-    }
-}
-
-
-const getSingleStudent = async (studentId) => {
-    try {
-        const { collection } = await connect();
-        const result = await collection.findOne({ type: "attendance" });
-     
-        const singleStudent = result.students.filter(
-            (student) => student.id === studentId
-        )
-
-        return singleStudent
-    } catch (error) {
-        console.log('model error',error)
+        
     }
 }
 
 const deleteStudent = async (studentId) => {
     try {
-        const { collection } = await connect();
-        const result = await collection.findOne({ type: "attendance" });
-     
-        const singleStudent = result.students.filter(
-            (student) => student.id === studentId
+        const collection = await connect('attendance');
+        const result = collection.updateOne(
+            { uid: 'attendance'},
+            {
+                $pull: {
+                    students: { uid: studentId }
+                }
+            }
         )
-
-
-        // deleting the student
-        const deleteStudent = await collection.updateOne(
-            { type: 'attendance' },
-            { $pull: { students: {id: studentId }} }
-        )
-
-        if (deleteStudent) {
-            return 'successful deletion'
-        } else {
-            return 'did not delete - error '
-        }
+        
+        return result;
     } catch (error) {
-        console.log('model error',error)
+        console.log('Error deleting:', error);
+        throw new Error('Failed to delete student');
     }
 }
 
 
-/*
-  const result = await collection.findOne({
-            type: "attendance",
-            students: { $elemMatch: { id: studentId } } // Match student with the given ID
-        });
-
-        // Check if result exists and return the student if found
-        if (result && result.students) {
-            return result.students.find(student => student.id === studentId) || null; // Return the student object
-        }
-
-*/
-
-
-
 export default {
-    addStudent,
-    getStudents,
-    getSingleStudent,
+    fetchStudent,
+    getAllStudents,
+    updateStudent,
     deleteStudent
 }
+
