@@ -1,6 +1,5 @@
 import { MongoClient } from "mongodb";
 
-
 const client = new MongoClient("mongodb://localhost:27017/");
 
 const connect = async () => {
@@ -9,6 +8,16 @@ const connect = async () => {
         let db = client.db('comsoc-mc');
         let collection = db.collection('attendance_system');
         return { db, collection }
+
+const connect = async (attendance) => {
+    try {
+        if (!db) {
+            await client.connect();
+            db = client.db('comsoc-mc');
+            console.log('Connected to DB ✔')
+        }
+        const collection = db.collection(attendance);
+        return collection;
     } catch (error) {
         console.log('Connection', error);
     }
@@ -26,4 +35,4 @@ const disconnect = async () => {
 export {
     connect,
     disconnect
-};
+}
