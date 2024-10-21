@@ -1,4 +1,4 @@
-import { connect, disconnect } from "../utils/dbUtils.mjs";
+import { connect } from "../utils/dbUtils.mjs";
 
 const fetchStudent = async (studentId) => {
     try {
@@ -20,6 +20,35 @@ const fetchStudent = async (studentId) => {
         console.log(error)
         throw error
     } 
+}
+
+const createStudent = async () => {
+    try {
+        // sample data
+        // const userData = {
+        //     name: 'yees',
+        //     year: '1Y',
+        //     uid: 'random12312321'
+        // }
+        // end of sample data
+
+
+        const collection = await connect('attendance');
+        const result = await collection.updateOne(
+            { uid: "attendance"},
+            {
+                $push: {
+                    students: userData
+                }
+            }
+        )
+
+        console.log(result)
+        
+    } catch (error) {
+        console.log('Error creating students:', error);
+        throw new Error('Failed to create students');
+    }
 }
 
 const getAllStudents = async () => {
@@ -61,7 +90,6 @@ const deleteStudent = async (studentId) => {
                 }
             }
         )
-        
         return result;
     } catch (error) {
         console.log('Error deleting:', error);
@@ -74,6 +102,7 @@ export default {
     fetchStudent,
     getAllStudents,
     updateStudent,
-    deleteStudent
+    deleteStudent,
+    createStudent
 }
 

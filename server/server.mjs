@@ -1,7 +1,7 @@
 import express from 'express';
 import attendanceRoute from './routes/attendanceRoutes.mjs';
 
-
+import studentModel from './models/studentModel.mjs';
 // for testing area
 
 
@@ -20,6 +20,7 @@ app.use('/attendance', attendanceRoute)
 app.get('/', async (req, res) => {
     // const result = await userModel.deleteStudent('111')
     // console.log(userModel.createStudent())
+    const result = await studentModel.createStudent();
     res.send('working')
 })
 
