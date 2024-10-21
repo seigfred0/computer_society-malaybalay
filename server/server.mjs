@@ -17,11 +17,18 @@ app.use(express.json())
 app.use('/attendance', attendanceRoute)
 
 
+const studentData = {
+    name: 'Yee Axel Flyn',
+    year: '2Y',
+    uid: '2012dkl',
+    qr_code: 'sadfsafow320dsfsjo'
+}
+
 app.get('/', async (req, res) => {
     // const result = await userModel.deleteStudent('111')
     // console.log(userModel.createStudent())
     const result = await studentModel.createStudent();
-    res.send('working')
+    res.send(result)
 })
 
 app.listen(5000, () => {

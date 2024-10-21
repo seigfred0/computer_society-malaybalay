@@ -22,17 +22,8 @@ const fetchStudent = async (studentId) => {
     } 
 }
 
-const createStudent = async () => {
+const createStudent = async (userData) => {
     try {
-        // sample data
-        // const userData = {
-        //     name: 'yees',
-        //     year: '1Y',
-        //     uid: 'random12312321'
-        // }
-        // end of sample data
-
-
         const collection = await connect('attendance');
         const result = await collection.updateOne(
             { uid: "attendance"},
@@ -42,9 +33,10 @@ const createStudent = async () => {
                 }
             }
         )
-
-        console.log(result)
         
+        if (result) {
+            return 'Student Registered'
+        }
     } catch (error) {
         console.log('Error creating students:', error);
         throw new Error('Failed to create students');
@@ -71,6 +63,7 @@ const getAllStudents = async () => {
 }
 
 
+// Not sure if we should allow students to update, since this will just be for registering for the event.
 const updateStudent = async () => {
     try {
         
