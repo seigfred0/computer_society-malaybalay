@@ -1,5 +1,6 @@
 import studentModel from '../models/studentModel.mjs';
-
+import { v4 as uuidv4 } from 'uuid';
+import qrcode from 'qrcode';
 
 const getAllStudents = async (req, res) => {
     try {
@@ -19,13 +20,39 @@ const getOneStudent = async (req, res) => {
     }
 }
 
+
+// Controller
+// try {
+
+//     1. get data from client (req.body)
+//     2. create a uid... from package uuid
+//     3. generate QR code (package is qrcode)... use the uid as the data for the qr code
+//     4. insert the uid and qr code to the existing data from client
+//     5. insert it in the studentModel createStudent
+
+
+    
+//     res.send('createStudent')
+// } catch (error) {
+//     res.status(500).json({ errorMessage: 'Error creating student', error})
+// }
 const createStudent = async (req, res) => {
     try {
-        
-        res.send('createStudent')
+        const studentData = req.body;
+        const uniqueId = uuidv4();
+        const qrCodeData = await qrcode.toDataURL(uniqueId);
+
+        studentData.uuid = uniqueId;
+        studentData.qrcode = qrCodeData;
+
+        const result = await studentModel.createStudent(studentData)
+
+        // console.log(uniqueId);
+        res.send(result)
     } catch (error) {
-        res.status(500).json({ errorMessage: 'Error creating student', error})
+        console.log({ errorMessage: 'Error creating student', error})
     }
+
 }
 
 const updateStudent = async (req, res) => {

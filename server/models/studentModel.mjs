@@ -35,7 +35,7 @@ const createStudent = async (userData) => {
         )
         
         if (result) {
-            return 'Student Registered'
+            return result
         }
     } catch (error) {
         console.log('Error creating students:', error);

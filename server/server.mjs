@@ -25,8 +25,6 @@ const studentData = {
 }
 
 app.get('/', async (req, res) => {
-    // const result = await userModel.deleteStudent('111')
-    // console.log(userModel.createStudent())
     const result = await studentModel.createStudent();
     res.send(result)
 })
