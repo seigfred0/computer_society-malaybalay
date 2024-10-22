@@ -1,5 +1,9 @@
+<<<<<<< Updated upstream
 import qrcode from 'qrcode'
 import { v4 as uuidv4 } from 'uuid'
+=======
+import { connect } from "../utils/dbUtils.mjs";
+>>>>>>> Stashed changes
 import studentModel from '../models/studentModel.mjs';
 
 
@@ -24,7 +28,23 @@ const getOneStudent = async (req, res) => {
 const createStudent = async (req, res) => {
     try {
         const studentData = req.body;
+<<<<<<< Updated upstream
         const uniqueId = uuidv4(); 
+=======
+
+        const collection = await connect('master_list');
+
+        const existingStudent = await collection.find({ 
+            name: studentData.name, 
+            year: studentData.year 
+        });
+
+        if (existingStudent) {
+            return res.status(400).send({ message: 'Student with the same name and year already exists' });
+        }
+
+        const uniqueId = uuidv4();
+>>>>>>> Stashed changes
         const qrCodeData = await qrcode.toDataURL(uniqueId);
 
         studentData.uuid = uniqueId;

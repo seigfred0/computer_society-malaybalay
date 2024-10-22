@@ -32,11 +32,18 @@ const createStudent = async () => {
         // }
         // end of sample data
         const collection = await connect('attendance');
+
+        const studentData = {
+            name: userData.name,
+            year: userData.year
+        };
+
         const result = await collection.updateOne(
             { uid: "attendance"},
             {
                 $push: {
-                    students: userData
+                    students: userData,
+                    master_list: studentData
                 }
             }
         )
