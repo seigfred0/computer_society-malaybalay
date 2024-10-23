@@ -22,15 +22,8 @@ const fetchStudent = async (studentId) => {
     } 
 }
 
-const createStudent = async () => {
+const createStudent = async (userData) => {
     try {
-        // sample data
-        // const userData = {
-        //     name: 'yees',
-        //     year: '1Y',
-        //     uid: 'random12312321'
-        // }
-        // end of sample data
         const collection = await connect('attendance');
 
         const studentData = {
@@ -104,11 +97,39 @@ const deleteStudent = async (studentId) => {
 }
 
 
+// Checking
+const checkStudent = async (studentData) => {
+    try {
+        const collection = await connect('attendance');
+        const { master_list } = await collection.findOne(
+            { uid: "attendance"},
+            { projection: {
+                master_list: 1,
+                _id: 0
+            }}
+        );
+
+        const result = master_list.find((student) => {
+            return student.name === studentData.name && student.year === studentData.year
+        })
+        
+        if (result) {
+            return true
+        }
+        return false
+    } catch (error) {
+        console.log('Error in master list:', error);
+        throw new Error('Failed to get master list');
+    }
+}
+
+
 export default {
     fetchStudent,
     getAllStudents,
     updateStudent,
     deleteStudent,
-    createStudent
+    createStudent,
+    checkStudent
 }
 

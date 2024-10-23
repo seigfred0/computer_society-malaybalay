@@ -1,9 +1,6 @@
-<<<<<<< Updated upstream
 import qrcode from 'qrcode'
 import { v4 as uuidv4 } from 'uuid'
-=======
 import { connect } from "../utils/dbUtils.mjs";
->>>>>>> Stashed changes
 import studentModel from '../models/studentModel.mjs';
 
 
@@ -27,34 +24,28 @@ const getOneStudent = async (req, res) => {
 
 const createStudent = async (req, res) => {
     try {
-        const studentData = req.body;
-<<<<<<< Updated upstream
-        const uniqueId = uuidv4(); 
-=======
-
-        const collection = await connect('master_list');
-
-        const existingStudent = await collection.find({ 
-            name: studentData.name, 
-            year: studentData.year 
-        });
-
-        if (existingStudent) {
-            return res.status(400).send({ message: 'Student with the same name and year already exists' });
+        const { name, year } = req.body;
+        const studentData = {
+            name: name.trim().toLowerCase(),
+            year
         }
 
-        const uniqueId = uuidv4();
->>>>>>> Stashed changes
+        const checkStudent = await studentModel.checkStudent(studentData);    
+        if (!checkStudent) {
+            return res.status(400).send({ message: 'Incorrect credentials!' });
+        }
+        
+        const uniqueId = uuidv4(); 
         const qrCodeData = await qrcode.toDataURL(uniqueId);
-
+        
         studentData.uuid = uniqueId;
         studentData.qrcode = qrCodeData;
-
+        
         const result = await studentModel.createStudent(studentData)
 
-        console.log(uniqueId);
-        console.log(studentData);
-        res.send(result);
+        // console.log(uniqueId);
+        // console.log(studentData);
+        res.send(checkStudent);
     } catch (error) {
         console.log({ errorMessage: 'Error creating student', error})
     }

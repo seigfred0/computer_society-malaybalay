@@ -1,17 +1,8 @@
 import { MongoClient } from "mongodb";
 
 const client = new MongoClient("mongodb://localhost:27017/");
+let db;
 
-<<<<<<< Updated upstream
-const connect = async () => {
-    try {
-        await client.connect();
-        let db = client.db('comsoc-mc');
-        let collection = db.collection('attendance_system');
-        return { db, collection }
-
-=======
->>>>>>> Stashed changes
 const connect = async (attendance) => {
     try {
         if (!db) {

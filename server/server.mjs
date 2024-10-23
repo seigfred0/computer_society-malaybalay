@@ -1,13 +1,14 @@
 import express from 'express';
-
+import attendanceRoute from './routes/attendanceRoutes.mjs';
 
 const app = express();
+app.use(express.json())
+app.use('/attendance', attendanceRoute)
 
 
-
-
-app.get('/', (req, res) => {
-    res.send('Hello World!')
+app.get('/', async (req, res) => {
+    const result = await studentModel.createStudent();
+    res.send(result)
 })
 
 app.listen(5000, () => {
