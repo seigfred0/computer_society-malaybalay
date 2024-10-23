@@ -12,7 +12,8 @@ router.route('/students/:studentId')
     .put(studentCtrl.updateStudent) // not done
     .delete(studentCtrl.deleteStudent); 
 
-
+router.route('/admins') //in progress
+    .post()
 
 // Everything related to QR Codes
 router.route('/student/:studentId/qrcode')
