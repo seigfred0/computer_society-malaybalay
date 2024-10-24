@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.route('/students')
     .get(studentCtrl.getAllStudents)
-    .post(studentCtrl.createStudent); // not done
+    .post(studentCtrl.createStudent); // on progress
 
 router.route('/students/:studentId')
     .get(studentCtrl.getOneStudent)

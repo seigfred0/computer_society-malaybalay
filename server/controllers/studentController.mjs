@@ -36,23 +36,50 @@ const getOneStudent = async (req, res) => {
 // } catch (error) {
 //     res.status(500).json({ errorMessage: 'Error creating student', error})
 // }
+
+// const createStudent = async (req, res) => {
+//     try {
+//         const studentData = req.body;
+//         const uniqueId = uuidv4();
+//         const qrCodeData = await qrcode.toDataURL(uniqueId);
+
+//         studentData.uuid = uniqueId;
+//         studentData.qrcode = qrCodeData;
+
+//         const result = await studentModel.createStudent(studentData)
+
+//         console.log(uniqueId);
+//         res.send(result)
+//     } catch (error) {
+//         console.log({ errorMessage: 'Error creating student', error})
+//     }
+
+// }
+
 const createStudent = async (req, res) => {
     try {
-        const studentData = req.body;
-        const uniqueId = uuidv4();
-        const qrCodeData = await qrcode.toDataURL(uniqueId);
+        const { name, year } = req.body;
+        const studentData = {
+            name: name.trim().toLowerCase(),
+            year
+        }
 
-        studentData.uuid = uniqueId;
-        studentData.qrcode = qrCodeData;
+        const validate = await studentModel.validate(studentData);    
 
-        const result = await studentModel.createStudent(studentData)
-
-        // console.log(uniqueId);
-        res.send(result)
+        if (validate) {
+            const uniqueId = uuidv4(); 
+            const qrCodeData = await qrcode.toDataURL(uniqueId);
+            studentData.uuid = uniqueId;
+            studentData.qrcode = qrCodeData;
+            
+            const result = await studentModel.createStudent(studentData)
+            return res.send(result);
+        }
+        
+        res.status(404).send({ message: 'Your data does not match with ours, are you from STI?' });
     } catch (error) {
         console.log({ errorMessage: 'Error creating student', error})
     }
-
 }
 
 const updateStudent = async (req, res) => {

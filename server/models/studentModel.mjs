@@ -64,13 +64,13 @@ const getAllStudents = async () => {
 
 
 // Not sure if we should allow students to update, since this will just be for registering for the event.
-const updateStudent = async () => {
-    try {
+// const updateStudent = async () => {
+//     try {
         
-    } catch (error) {
+//     } catch (error) {
         
-    }
-}
+//     }
+// }
 
 const deleteStudent = async (studentId) => {
     try {
@@ -90,11 +90,51 @@ const deleteStudent = async (studentId) => {
     }
 }
 
+const validate = async (studentData) => {
+    try {
+        const collection = await connect('attendance');
+        const { master_list } = await collection.findOne(
+            { uid: "attendance"},
+            { projection: {
+                master_list: 1,
+                _id: 0
+            }}
+        );
+
+        const { students } = await collection.findOne(
+            { uid: "attendance"},
+            { projection: {
+                students: 1,
+                _id: 0
+            }}
+        )
+
+        // check if the user is in the master list
+        const result = master_list.find((student) => {
+            return student.name === studentData.name && student.year === studentData.year
+        })
+
+        const existing = students.find((student) => {
+            return student.name === studentData.name
+        })
+
+        // console.log("6666666666666666666", existing)
+        
+        if (result && !existing) {
+            return true
+        }
+        return false
+    } catch (error) {
+        console.log('Error in master list:', error);
+        throw new Error('Failed to get master list');
+    }
+}
+
 
 export default {
+    validate,
     fetchStudent,
     getAllStudents,
-    updateStudent,
     deleteStudent,
     createStudent
 }
